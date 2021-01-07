@@ -1,1 +1,330 @@
-mobile
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+<%=@title%>
+</title>
+<%= csrf_meta_tags %>
+<meta name="description" content="<%=@meta_desc%>">
+<meta property="og:url" content="<%=request.original_url%>"/>
+<meta property="og:title" content="<%=@title%>" />
+<meta property="og:description" content="<%=@meta_desc%>"/>
+<meta property="og:image" content="<%=@image%>"/>
+<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+<meta name="theme-color" content="#F5F5F5">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="TBC" />
+<meta name="application-name" content="TBC">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.5, user-scalable=yes">
+<%if 1==2%>
+<%if !(params[:controller]=='events' and params[:action]=='show' and !@event.try(:tbcx).blank?)%>
+<link rel="stylesheet" href="/css/style.css" />
+<%end%>
+<%end%>
+<link rel="stylesheet" href="/css/style.css" />
+
+<link rel="stylesheet" href="/css/stylesheet.css"/>
+<link rel="stylesheet" href="/gmaps4rails.css"/>
+<%= javascript_pack_tag "application" %>
+<%if 1==2%>
+<%if params[:controller]=='profile' and params[:action]=='index'%>
+<link rel="stylesheet" href="/css/style_workbar.css" />
+<link rel="stylesheet" href="/css/style.css" />
+<link rel="stylesheet" href="/css/styletest.css" />
+<style>
+  #content .account-figure img {
+    height: 200px;
+    max-width: 100%;
+    -o-object-fit: contain;
+       object-fit: contain; }
+</style>
+<%end%>	
+<%end%>
+<%if params[:controller]=='sesh'%>
+<%if params[:action]=='show'%>
+<%if mobile_device?%>	
+<link rel="stylesheet" href="/css/fa.css" />
+<%end%>
+<%end%>
+<link rel="stylesheet" href="/css/styletest.css" />
+<%end%>
+<%if (params[:controller]=='messages') or (params[:controller]=='manage') or (params[:controller]=='events' and params[:action]=='show' and !@event.try(:tbcx).blank?)%>
+<%if mobile_device? and params[:controller]=='manage'%>	
+<link rel="stylesheet" href="/css/fa.css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<%end%>
+<link rel="stylesheet" href="/css/styletest.css" />
+<%end%>
+<script src="https://use.fontawesome.com/7e0e14f76a.js"></script>
+<script type="text/javascript" src="/js/jquery.timepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/jquery.timepicker.css" />
+<!-- Facebook Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window,document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+ fbq('init', '646107508860274'); 
+fbq('track', 'PageView');
+</script>
+<noscript>
+ <img height="1" width="1" 
+src="https://www.facebook.com/tr?id=646107508860274&ev=PageView
+&noscript=1"/>
+</noscript>
+<!-- End Facebook Pixel Code -->
+<link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<nav class="title-bar" <%if (params[:controller]=='tickets' and params[:action]=='show')%>style="display:none"<%end%> >
+<div id="hamburger-open" class="button left">
+<i class="fa fa-bars"></i>
+</div>
+<div id="title-bar-title" class="title">
+<a href="/">
+<img src="/img/logo.png" alt="The Boston Calendar">
+</a>
+</div>
+      
+    <div id="title-bar-search" class="title" style="display: none">
+        
+                <input onkeypress="handle(event)" type="text" class="search-bar" name="search" placeholder="Search events...">
+      
+    </div>
+
+<%if !((params[:controller]=='sesh' and params[:action]=='index') or (params[:controller]=='donation' and params[:action]=='index') or (params[:controller]=='coronavirus' and params[:action]=='index'))%>
+<div id="search-open" class="button right">
+<i class="fa fa-search"></i>
+</div>
+<%else%>
+<div class="button right">
+<a href="/"><img style="width:22px;border:0px" border="0" src='/TBC_logo_sticker.png' /></a>
+</div>
+
+<%end%>
+
+</nav>
+<div class="hamburger-hider left"></div>
+<div class="hamburger-hider right"></div>
+<div id="hamburger-menu" class="hamburger-menu">
+<div class="header">
+<div class="title">
+Menu
+</div>
+<div id="hamburger-close" class="close">
+<img src="/img/icon_close.png" srcset="/img/icon_close.png 1x, /img/icon_close_2X.png 2x" alt="Close Menu">
+</div>
+</div>
+<ul class="hamburger-list">
+
+<%if 1==2%>
+<li <%if params[:action]=="index"%>class="active"<%end%>>
+<a href="/mobile/index">
+<span>Home</span>
+</a>
+</li>
+<%end%>
+
+
+
+
+
+
+
+
+<%#if user_signed_in? or instructor_signed_in?%>
+					
+	<%if 1==2%>
+
+	
+<%#if user_signed_in? %>			
+	<%if 1==2%>
+
+<li <%if params[:controller]=="profile"%>class="active"<%end%>>
+<a href="/account">
+<span>Account</span>
+</a>
+</li>
+
+
+<li <%if params[:action]=="new" and params[:controller]=="events"%>class="active"<%end%>>
+<a href="/events/new">
+
+<%#if instructor?%>
+	<%if 1==2%>
+
+<span>Add new Sesh</span>
+
+<%else%>
+<span>Add new event</span>
+<%end%>
+
+</a>
+</li>
+
+
+<li <%if params[:controller]=="messages"%>class="active"<%end%>>
+<a href="/messages">
+<span>Messages</span>
+</a>
+</li>	
+
+
+
+
+<%else%>
+<li <%if params[:controller]=="profile"%>class="active"<%end%>>
+<a href="/account">
+<span>Account</span>
+</a>
+</li>
+
+	
+	
+	
+<%end%>
+					
+						
+						
+<%else%>				 
+<li <%if request.original_url.include?("/users/sign_in")%>class="active"<%end%>>
+<a href="/users/sign_in">
+<span>Sign in</span>
+</a>
+</li>
+<li <%if request.original_url.include?("/users/sign_up")%>class="active"<%end%>>
+<a href="/users/sign_up">
+<span>Sign up</span>
+</a>
+</li>						
+
+<li <%if params[:action]=="new" and params[:controller]=="events"%>class="active"<%end%>>
+<a href="/events/new">
+
+<%#if instructor?%>
+	<%if 1==2%>
+
+<span>Add new Sesh</span>
+<%else%>
+<span>Add new event</span>
+<%end%>
+</a>
+</li>
+ <%end%>
+<li <%if params[:controller]=="about"%>class="active"<%end%>>
+<a href="/about/index">
+<span>About</span>
+</a>
+</li>
+
+<li <%if params[:controller]=="email_sign"%>class="active"<%end%>>
+<a href="/newsletter">
+<span>Newsletter</span>
+</a>
+</li>
+
+<li>
+<a target="_blank" href="http://blog.thebostoncalendar.com">
+<span>Blog</span>
+</a>
+</li>
+
+<li>
+<a target="_blank" href="http://www.facebook.com/thebostoncalendar">
+<span>Facebook</span>
+</a>
+</li>
+
+
+<li>
+<a target="_blank" href="http://www.instagram.com/thebostoncal">
+<span>Instagram</span>
+</a>
+</li>
+ <li>
+<a target="_blank" href="http://www.twitter.com/thebostoncal">
+<span>Twitter</span>
+</a>
+</li> 
+<li>
+<a target="_blank" href="/sesh">
+<span><b>Sesh</b></span>
+</a>
+</li>
+
+<li>
+<a target="_blank" href="/terms">
+<span>Terms</span>
+</a>
+</li>
+<li>
+<a target="_blank" href="/privacy-policy">
+<span>Privacy Policy</span>
+</a>
+</li>
+<%#if user_signed_in?%>
+	<%if 1==2%>
+
+<li <%if params[:action]=="signup"%>class="active"<%end%>>
+<a href="/instructors/sign_out" data-method="delete" rel="nofollow">
+<span>Sign out</span>
+</a>
+</li>
+<%end%>
+<li><a style="color:black" target="_blank" href="#">
+<span style="color:#666;font-size:11px">&copy; The City Calendar, LLC. 2020</span>
+</a>
+</li>
+</ul>
+</div>
+<div id="hamburger-menu-dark-overlay" class="hamburger-menu-dark-overlay dark-overlay"></div>
+<div id="content">
+<%=yield%>
+</div>
+<%if params[:controller]=='events' and params[:action]=='index' %>
+<%elsif params[:controller]=='events' and params[:action]=='show' %>  
+<%elsif params[:controller]=='sesh' and params[:action]=='show' %>
+<%elsif params[:controller]=='seshes' and params[:action]=='show' %>  
+<%else%>
+ <script src="/js/script.js"></script>
+<script type="text/javascript">
+    function handle(e){
+        if(e.keyCode === 13){
+            window.location.href = "https://www.thebostoncalendar.com/events?search="+encodeURI($('.search-bar').val());
+        }
+        return false;
+    }
+</script>
+<%end%>
+ <script type="text/javascript" src="//maps.google.com/maps/api/js?v=3.5&key=AIzaSyC1sm2AjUsvvkgY2SxUEg_5BdWWCdFbi7E&sensor=false&amp;libraries=geometry"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-42683342-1', 'thebostoncalendar.com');
+  ga('send', 'pageview');
+</script>
+</body>
+</html>

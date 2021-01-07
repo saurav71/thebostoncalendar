@@ -1,0 +1,37 @@
+<main id="content" class="no-dropdown">
+    <header class="section-title centered">
+        <h2 class="article-title" style="color: #434343;font-size: 18px;text-align:left;padding-top:12px;border-bottom: solid 1px #eaeaea;margin-bottom: 7.5px;padding-bottom:5px">New event</h2>    	
+    </header>
+
+    <%= form_for @event,  :html => { :multipart => true } do |f| %>
+    <% if @event.errors.count>0 %>
+    <div id="error_explanation">
+
+       <h2><%= pluralize(@event.errors.count, "error") %> prohibited this listing from being saved:</h2>
+        <li>
+          <% @event.errors.full_messages.each do |msg| %>
+            <ul>
+            	<%= msg %>
+            </ul>
+          <%end%>
+        </li>  
+    </div>
+    <%end%>
+    <div class="general-form">
+        <label>Event title</label>
+        <%= f.text_field :title%>
+    </div>
+    <div class="flex-box flex-center">
+        <div class="flex-5 centered">
+            <input data-disable-with="PROCESSING..." class="button green-button" type="submit" value="Submit">
+        </div>
+        <div class="flex-1 centered"></div>
+            <div class="flex-5 centered">
+                <a href="/" class="button red-button">
+                    Cancel
+                </a>
+            </div>
+         </div>
+     </div>        
+    <%end%>
+</main>
